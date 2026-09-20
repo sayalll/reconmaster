@@ -1,0 +1,17 @@
+# Global configuration. Env vars override: RM_SHODAN_KEY, RM_DASHBOARD_PASS, RM_DEBUG
+defaults:
+  rate_limit_per_sec: 10          # per-target global token bucket (tools + HTTP)
+  timeout_tool: 600               # seconds per external tool
+  max_http_targets: 30            # cap on hosts probed by HTTP-layer plugins
+  wordlists:
+    base: /usr/share/seclists/Discovery/Web-Content
+    common: common.txt            # relative to base; used when no tech match
+    tech_map:                     # tech keyword -> wordlist relative to base
+      wordpress: CMS/wordpress.fuzz.txt
+      joomla:    CMS/joomla-plugins.fuzz.txt
+      drupal:    CMS/drupal-modules.fuzz.txt
+
+# fed into the triage scorer (now actually wired in)
+severity_boost:
+  prod_domain: true
+  asset_prefixes: {vpn: 1.4, mail: 1.2, sso: 1.5, admin: 1.5, api: 1.3, dev: 0.8, test: 0.7}
